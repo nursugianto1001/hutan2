@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         // Ambil role_id berdasarkan nama
         $adminRoleId = DB::table('roles')->where('name', 'admin')->value('id');
         $companyRoleId = DB::table('roles')->where('name', 'company')->value('id');
+        $alumniRoleId = DB::table('roles')->where('name', 'alumni')->value('id');
 
         // Buat Admin
         User::factory()->create([
@@ -53,6 +54,17 @@ class DatabaseSeeder extends Seeder
             'status' => 'verified',
             'created_at' => now(),
             'updated_at' => now(),
+        ]);
+
+        // Buat akun Alumni
+        User::factory()->create([
+            'name' => 'Alumni UNTAN',
+            'email' => 'alumniuntan@gmail.com',
+            'password' => bcrypt('alumni123'),
+            'role_id' => $alumniRoleId,
+            'nip' => null,
+            'nim' => 'A001', // Hanya untuk alumni
+            'email_verified_at' => now(),
         ]);
     }
 }
