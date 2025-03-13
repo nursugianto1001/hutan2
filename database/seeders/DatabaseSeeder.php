@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Buat akun Alumni
-        User::factory()->create([
+        $alumniUser = User::factory()->create([
             'name' => 'Alumni UNTAN',
             'email' => 'alumniuntan@gmail.com',
             'password' => bcrypt('alumni123'),
@@ -65,6 +65,63 @@ class DatabaseSeeder extends Seeder
             'nip' => null,
             'nim' => 'A001', // Hanya untuk alumni
             'email_verified_at' => now(),
+        ]);
+
+        // Buat data dummy untuk lowongan pekerjaan
+        $company = DB::table('companies')->first(); // Ambil perusahaan pertama yang ada
+
+        if ($company) { // Pastikan perusahaan ada sebelum insert job_listings
+            DB::table('job_listings')->insert([
+                'company_id' => $company->id, // ✅ Ambil ID perusahaan yang valid
+                'judul' => 'Software Engineer',
+                'deskripsi' => 'Membutuhkan Software Engineer dengan pengalaman minimal 2 tahun.',
+                'jenis_pekerjaan' => 'Full-time',
+                'salary_min' => 10000000,
+                'salary_max' => 15000000,
+                'tanggung_jawab' => 'Mengembangkan aplikasi web dengan Laravel',
+                'persyaratan' => 'Pengalaman 2 tahun di bidang IT',
+                'keterampilan' => 'Laravel, PHP, MySQL',
+                'jumlah_pelamar' => 0,
+                'status' => 'active',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        // Buat data dummy untuk aplikasi lamaran kerja
+        DB::table('job_applications')->insert([
+            [
+                'user_id' => $alumniUser->id,
+                'job_listing_id' => 1,
+                'surat_lamaran' => 'surat_lamaran.pdf',
+                'cv' => 'cv_alumni.pdf',
+                'status' => 'pending',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        ]);
+
+        // Buat data dummy untuk jadwal wawancara
+        DB::table('interview_schedules')->insert([
+            [
+                'user_id' => $alumniUser->id,
+                'job_listing_id' => 1,
+                'tanggal_wawancara' => now()->addDays(5),
+                'status' => 'scheduled',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        ]);
+
+        // Buat data dummy untuk notifikasi
+        DB::table('notifications')->insert([
+            [
+                'user_id' => $alumniUser->id,
+                'isi' => 'Lamaran Anda sedang diproses.',
+                'is_read' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
         ]);
     }
 }
