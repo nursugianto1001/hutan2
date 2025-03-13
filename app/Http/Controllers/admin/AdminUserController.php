@@ -9,13 +9,11 @@ use App\Models\User;
 
 class AdminUserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $data = [
-            'roles' => Roles::all(),
-            'users' => User::all()
-        ];
-        return view('admin.crud.user', $data);
+        $users = User::all();
+        $roles = Roles::all();
+        return view('admin.crud.user', compact('users', 'roles'));
     }
 
     public function create()

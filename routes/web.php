@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\admin\AdminControler;
+use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\company\CompanyController;
 use App\Http\Controllers\alumni\AlumniController;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +13,7 @@ Route::get('/', function () {
         return view('welcome');
     }
     if(Auth::user()->role_id == 1){
-        return App(AdminControler::class)->index();
+        return App(AdminController::class)->index();
     }
     if(Auth::user()->role_id == 2){
         return App(CompanyController::class)->index();
